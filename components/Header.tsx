@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { BellIcon } from '@heroicons/react/24/solid';
 
-export const Header = () => {
+export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = React.useState(false);
 
   React.useEffect(() => {
