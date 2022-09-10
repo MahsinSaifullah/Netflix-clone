@@ -1,9 +1,13 @@
+import * as React from 'react';
 import Head from 'next/head';
 import type { GetServerSideProps, NextPage } from 'next';
+import { useRecoilValue } from 'recoil';
 
-import { Header, Banner } from '../components';
+import { Header, Banner, Modal } from '../components';
 import { requestUrls, Movie } from '../utils';
 import { MovieRow } from '../components';
+import { useAuth } from '../hooks';
+import { modalState } from '../atoms';
 
 interface HomeProps {
   netflixOriginals: Movie[];
@@ -25,6 +29,13 @@ const Home: NextPage<HomeProps> = ({
   romanceMovies,
   documentaries,
 }) => {
+  const { loading } = useAuth();
+  const showModal = useRecoilValue(modalState);
+
+  if (loading) {
+    return <React.Fragment />;
+  }
+
   return (
     <div className="relative h-screen bg-gradient-to-b lg:h-[140vh]">
       <Head>
@@ -45,7 +56,7 @@ const Home: NextPage<HomeProps> = ({
           <MovieRow title="Documentaries" movies={documentaries} />
         </section>
       </main>
-      {/* Movies Detail Modal */}
+      {showModal && <Modal />}
     </div>
   );
 };
