@@ -4,12 +4,16 @@ import { InformationCircleIcon, PlayIcon } from '@heroicons/react/24/solid';
 
 import { Movie } from '../utils';
 import { baseUrl } from '../constants';
+import { useSetRecoilState } from 'recoil';
+import { currentMovieState, modalState } from '../atoms';
 
 interface BannerProps {
   netflixOriginals: Movie[];
 }
 export const Banner: React.FC<BannerProps> = ({ netflixOriginals }) => {
   const [currentMovie, setCurrentMovie] = React.useState<Movie | null>(null);
+  const setShowModal = useSetRecoilState(modalState);
+  const setSelectedMovie = useSetRecoilState(currentMovieState);
 
   React.useEffect(() => {
     setCurrentMovie(
@@ -39,7 +43,13 @@ export const Banner: React.FC<BannerProps> = ({ netflixOriginals }) => {
         <button className="bannerButton bg-white text-black">
           <PlayIcon className="h-4 w-4 text-black md:h-7 md:w-7" /> Play
         </button>
-        <button className="bannerButton bg-[gray]/70">
+        <button
+          className="bannerButton bg-[gray]/70"
+          onClick={() => {
+            setSelectedMovie(currentMovie);
+            setShowModal(true);
+          }}
+        >
           More Info <InformationCircleIcon className="h-5 w-5 md:h-8 md:w-8" />
         </button>
       </div>
